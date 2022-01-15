@@ -1,0 +1,114 @@
+@use '~@angular/material' as material;
+@import '../../../theme/app.theme.scss';
+@import '../../../theme/mixins/glass-morphism.mixin';
+@import '../../../theme/mixins/apply-to-desktop.mixin';
+
+nav {
+    @include glass-morphism(
+        $background-color: material.get-color-from-palette($primary-palette, default),
+        $background-opacity: 0.95
+    );
+
+    position: fixed;
+    top: 0;
+    justify-content: space-between;
+    z-index: 100;
+    width: 100%;
+    padding: 15px 20px;
+    color: material.get-color-from-palette($primary-palette, default-contrast);
+    box-shadow: 0 8px 32px 0 rgba(material.get-color-from-palette($primary-palette, default), 0.65);
+}
+
+.navigation-item {
+    margin-right: 15px;
+    margin-top: auto;
+    margin-bottom: auto;
+    cursor: pointer;
+    transition: all 0.3s;
+
+    &:last-child {
+        margin-right: 0;
+    }
+
+    &:hover {
+        color: material.get-color-from-palette($accent-palette, default);
+    }
+}
+
+#home-page-link {
+    height: fit-content;
+    margin-top: auto;
+    margin-bottom: auto;
+}
+
+mat-icon {
+    color: material.get-color-from-palette($primary-palette, default-contrast);
+}
+
+#navigation-links, nav > a {
+    display: none;
+}
+
+#open-hamburger-button {
+    color: material.get-color-from-palette($primary-palette, default-contrast);
+}
+
+#hamburger-menu {
+    background-color: material.get-color-from-palette($primary-palette, default);
+    opacity: 0.98;
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+
+    #close-hamburger-button {
+        position: absolute;
+        right: 15px;
+        top: 15px;
+        font-size: 32px;
+        width: 32px;
+        height: 32px;
+    }
+
+    #hamburger-navigation-links {
+        margin: auto;
+
+        .hamburger-navigation-item {
+            font-size: 24px;
+            margin-bottom: 25px;
+            text-align: center;
+
+            &:last-child {
+                margin-bottom: 0;
+            }
+        }
+
+        & > a {
+            justify-content: center;
+            margin: 15px auto 0 auto;
+
+            & > button {
+                font-size: 1.1em;
+                padding: 8px 19px;
+            }
+        }
+    }
+}
+
+@include apply-to-desktop {
+    #navigation-links {
+        display: flex;
+    }
+
+    nav > a {
+        display: unset;
+    }
+
+    #open-hamburger-button {
+        display: none;
+    }
+}

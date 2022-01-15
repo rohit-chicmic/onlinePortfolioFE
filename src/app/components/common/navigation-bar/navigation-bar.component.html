@@ -1,0 +1,33 @@
+<nav class="row">
+    <div id="home-page-link" routerLink="/" fragment="landing-section" class="navigation-item">Rohit Kumar</div>
+
+    <mat-icon id="open-hamburger-button" (click)="toggleIsHamburgerMenuOpen()" *ngIf="!isHamburgerMenuOpen">
+        menu
+    </mat-icon>
+    <div id="hamburger-menu" *ngIf="isHamburgerMenuOpen">
+        <mat-icon id="close-hamburger-button" (click)="toggleIsHamburgerMenuOpen()">
+            close
+        </mat-icon>
+
+        <div id="hamburger-navigation-links" class="column">
+            <div routerLink="/" class="hamburger-navigation-item" fragment="about-me-section" (click)="toggleIsHamburgerMenuOpen()">
+                About Me
+            </div>
+            <div routerLink="/" class="hamburger-navigation-item" fragment="projects-section" (click)="toggleIsHamburgerMenuOpen()">
+                Projects
+            </div>
+            <div routerLink="/" class="hamburger-navigation-item" fragment="contact-me-section" (click)="toggleIsHamburgerMenuOpen()">
+                Contact Me
+            </div>
+            <a [href]="cvDocumentUrl" target="_blank"><button class="btn-gradient">resumé</button></a>
+        </div>
+    </div>
+
+    <div id="navigation-links" class="row">
+        <div routerLink="/" fragment="about-me-section" class="navigation-item">About Me</div>
+        <div routerLink="/" fragment="projects-section" class="navigation-item">Projects</div>
+        <div routerLink="/" fragment="contact-me-section" class="navigation-item">Contact Me</div>
+    </div>
+
+    <a [href]="cvDocumentUrl" target="_blank"><button class="btn-gradient">Resume</button></a>
+</nav>

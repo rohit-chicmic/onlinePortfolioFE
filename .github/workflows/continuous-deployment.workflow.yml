@@ -1,0 +1,77 @@
+name: continuous-deployment
+
+on:
+  push:
+    branches:
+      - master
+      - prod
+
+env:
+  NODE_VERSION: 14.18.1
+
+jobs:
+  publish-dev:
+    if: github.ref == 'refs/heads/master'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Build & publish container to Heroku
+        uses: gonuit/heroku-docker-deploy@v1.3.3
+        with:
+          email: ${{ secrets.HEROKU_EMAIL }}
+          heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
+          heroku_app_name: ${{ secrets.HEROKU_APP_NAME_DEV }}
+          dockerfile_directory: ./
+          dockerfile_name: Dockerfile-dev
+          docker_options: ${{ format('{0}{1}', '--no-cache --build-arg node_version=', env.NODE_VERSION) }}
+          process_type: web
+
+  publish-prod:
+    if: github.ref == 'refs/heads/prod'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Build & publish container to Heroku
+        uses: gonuit/heroku-docker-deploy@v1.3.3
+        with:
+          email: ${{ secrets.HEROKU_EMAIL }}
+          heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
+          heroku_app_name: ${{ secrets.HEROKU_APP_NAME_PROD }}
+          dockerfile_directory: ./
+          dockerfile_name: Dockerfile-prod
+          docker_options: ${{ format('{0}{1}', '--no-cache --build-arg node_version=', env.NODE_VERSION) }}
+          process_type: web
+
+  build-and-publish-docker-image-to-dockerhub:
+    if: github.ref == 'refs/heads/prod'
+    runs-on: ubuntu-latest
+    environment: Prod
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v2
+
+      - name: Setup QEMU
+        uses: docker/setup-qemu-action@v1
+
+      - name: Setup Docker Buildx
+        uses: docker/setup-buildx-action@v1
+
+      - name: Login to DockerHub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build and push
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          file: ./Dockerfile-prod
+          build-args: |
+            node_version=14.18.1
+          push: true
+          tags: gavindebruyn/online-portfolio.frontend:latest
