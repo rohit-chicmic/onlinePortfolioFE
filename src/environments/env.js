@@ -10,6 +10,6 @@
     window['env']['githubUsername'] = 'rohit-chicmic'
     window['env']['linkedInProfileLink'] = 'https://www.linkedin.com/in/rkumar181298/'
     window['env']['linkedInUsername'] = 'rkumar181298'
-    window['env']['backendServiceToken'] = 'iamrohit8757927662'
+    window['env']['backendServiceToken'] = ''
     window['env']['cvDocumentUrl'] = ''
 })(this)
